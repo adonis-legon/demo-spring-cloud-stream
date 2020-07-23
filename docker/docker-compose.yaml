@@ -12,7 +12,6 @@ services:
       - 15672:15672
     networks:
       - demo-spring-cloud-stream
-
   producer:
     build: ../producer
     image: demo-spring-cloud-stream-producer:0.1
@@ -29,7 +28,6 @@ services:
       - rabbitmq
     networks:
       - demo-spring-cloud-stream
-
   consumer1:
     build: ../consumer
     image: ${CONSUMER_IMAGE_NAME}
@@ -42,7 +40,6 @@ services:
       - rabbitmq
     networks:
       - demo-spring-cloud-stream
-
   consumer2:
     image: ${CONSUMER_IMAGE_NAME}
     environment:
@@ -55,7 +52,6 @@ services:
       - consumer1
     networks:
       - demo-spring-cloud-stream
-
   consumer3:
     image: ${CONSUMER_IMAGE_NAME}
     environment:
