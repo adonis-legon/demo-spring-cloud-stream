@@ -1,0 +1,73 @@
+version: "3"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.7-management
+    container_name: rabbitmq
+    expose:
+      - 5672
+      - 15672
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - demo-spring-cloud-stream
+
+  producer:
+    build: ../producer
+    image: demo-spring-cloud-stream-producer:0.1
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    environment:
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+    depends_on:
+      - rabbitmq
+    networks:
+      - demo-spring-cloud-stream
+
+  consumer1:
+    build: ../consumer
+    image: ${CONSUMER_IMAGE_NAME}
+    environment:
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+    depends_on:
+      - rabbitmq
+    networks:
+      - demo-spring-cloud-stream
+
+  consumer2:
+    image: ${CONSUMER_IMAGE_NAME}
+    environment:
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+    depends_on:
+      - rabbitmq
+      - consumer1
+    networks:
+      - demo-spring-cloud-stream
+
+  consumer3:
+    image: ${CONSUMER_IMAGE_NAME}
+    environment:
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+    depends_on:
+      - rabbitmq
+      - consumer1
+    networks:
+      - demo-spring-cloud-stream
+
+networks:
+  demo-spring-cloud-stream:
