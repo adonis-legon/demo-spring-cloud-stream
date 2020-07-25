@@ -1,0 +1,1 @@
+docker rm rabbitmq --force
