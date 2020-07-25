@@ -5,5 +5,5 @@ import com.example.demospringcloudstreamconsumer.exceptions.ExternalServiceExcep
 import com.example.demospringcloudstreamconsumer.exceptions.MessageValidationException;
 
 public interface MessageService {
-    void process(Message message) throws MessageValidationException, ExternalServiceException;
+    Boolean process(Message message) throws MessageValidationException, ExternalServiceException;
 }

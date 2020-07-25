@@ -26,11 +26,18 @@ public class MessageConsumer {
         // Manual ACK and in case of error, throw an Exception that will be retried or
         // directly sent to the DLQ depending on the consumer configuration
 
-        // process Message usig business service
-        messageService.process(message);
-
-        // ACK a successfuly processed Message
-        channel.basicAck(deliveryTag, false);
+        // process Message using business service and check if it needs to be
+        // re-enqueued
+        System.out.println("Start processsing message: " + message.toString());
+        if (messageService.process(message)) {
+            // ACK a successfuly processed Message
+            channel.basicAck(deliveryTag, false);
+            System.out.println("Message processed: " + message.toString());
+        } else {
+            // NACK by rejecting and re-enqueuing the message
+            channel.basicReject(deliveryTag, true);
+            System.out.println("Retrying message: " + message.toString());
+        }
     }
 
     @RabbitListener(queues = { messageDlq })
