@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StreamMessageService implements MessageService {
+public class DemoMessageService implements MessageService {
 
     @Autowired
     MessageProducer messageProducer;
