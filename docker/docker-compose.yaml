@@ -28,7 +28,7 @@ services:
       - rabbitmq
     networks:
       - demo-spring-cloud-stream
-  consumer1:
+  consumer1: &consumer-instance
     build: ../consumer
     image: ${CONSUMER_IMAGE_NAME}
     environment:
@@ -41,29 +41,13 @@ services:
     networks:
       - demo-spring-cloud-stream
   consumer2:
-    image: ${CONSUMER_IMAGE_NAME}
-    environment:
-      RABBITMQ_HOST: ${RABBITMQ_HOST}
-      RABBITMQ_PORT: ${RABBITMQ_PORT}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
-    depends_on:
-      - rabbitmq
-      - consumer1
-    networks:
-      - demo-spring-cloud-stream
+    <<: *consumer-instance
   consumer3:
-    image: ${CONSUMER_IMAGE_NAME}
-    environment:
-      RABBITMQ_HOST: ${RABBITMQ_HOST}
-      RABBITMQ_PORT: ${RABBITMQ_PORT}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
-    depends_on:
-      - rabbitmq
-      - consumer1
-    networks:
-      - demo-spring-cloud-stream
+    <<: *consumer-instance
+  consumer4:
+    <<: *consumer-instance
+  consumer5:
+    <<: *consumer-instance
 
 networks:
   demo-spring-cloud-stream:
